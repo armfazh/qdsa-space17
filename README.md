@@ -14,7 +14,7 @@ This is an optimized library of the qDSA digital signature scheme for x64 archit
 
 ## Research Resources
 
-This library is part of an academic research paper titled *"A Secure and Efficient Implementation of the Quotient Digital Signature Algorithm (qDSA)" * by [Armando Faz-Hernández](http://www.ic.unicamp.br/~armfazh), [Hayato Fujii](http://lasca.ic.unicamp.br/~hayato/), [Diego Aranha](https://sites.google.com/site/dfaranha/), and [Julio López](http://www.ic.unicamp.br/pessoas/docentes/jlopez) from the Institute of Computing of the [University of Campinas](http://ic.unicamp.br), Brazil.
+This library is part of an academic research paper titled _"A Secure and Efficient Implementation of the Quotient Digital Signature Algorithm (qDSA)"_ by [Armando Faz-Hernández](http://www.ic.unicamp.br/~armfazh), [Hayato Fujii](http://lasca.ic.unicamp.br/~hayato/), [Diego Aranha](https://sites.google.com/site/dfaranha/), and [Julio López](http://www.ic.unicamp.br/pessoas/docentes/jlopez) from the Institute of Computing of the [University of Campinas](http://ic.unicamp.br), Brazil.
 
 A peer-reviewed paper was presented at the Seventh International Conference on Security, Privacy, and Applied Cryptography Engineering ([SPACE 2017](http://www.space.dbcegoa.ac.in/)) conference.
 
