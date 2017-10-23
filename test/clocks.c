@@ -15,20 +15,36 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
-#ifndef CREF_FE25519_H
-#define CREF_FE25519_H
+#include "clocks.h"
+#include <sys/time.h>
+#include <time.h>
 
-#include <inttypes.h>
+uint64_t time_now() 
+{
+	struct timeval tv;
+	uint64_t ret;
 
-typedef uint32_t crypto_uint32;
-typedef uint64_t crypto_uint64;
+	gettimeofday(&tv, NULL);
+	ret = tv.tv_sec;
+	ret *= 1000000;
+	ret += tv.tv_usec;
 
-#if defined(__FP_REF__)
-#include "fe25519_ref.h"
-#elif defined(__FP_X64__)
-#include "fe25519_x64.h"
+	return ret;
+}
+
+/**
+ * Taken from
+ * agl/curve25519-donna
+ * https://github.com/agl/curve25519-donna/blob/master/speed-curve25519.c
+ *
+ * ticks - not tested on anything other than x86
+ * */
+uint64_t cycles_now(void) {
+#if defined(__GNUC__)
+	uint32_t lo, hi;
+	__asm__ __volatile__("rdtsc" : "=a" (lo), "=d" (hi));
+	return ((uint64_t)lo | ((uint64_t)hi << 32));
 #else
-#error "Define __FP_X64__ or  __FP_REF__ variable."
+	return 0;	/* Undefined for now; should be obvious in the output */
 #endif
-
-#endif /* CREF_FE25519_H */
+}

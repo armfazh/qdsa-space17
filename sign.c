@@ -1,3 +1,19 @@
+/*
+ * Author: Joost Renes
+ * Version: 2017-05-24
+ * Public Domain
+ */
+/**
+ * Contribution:
+ * A new,faster right-to-left method for calculating
+ * fixed-point multiplications on Montgomery curves.
+ *
+ * Author:
+ * Copyright (c) 2017 Armando Faz <armfazh@ic.unicamp.br>.
+ * Institute of Computing.
+ * University of Campinas, Brazil.
+ *
+ **/
 #include "sign.h"
 
 int keypair(
@@ -74,7 +90,7 @@ int sign(
     compress(&rx, &R);
 
     for(i=0;i<32;i++) { sm[32+i] = pk[i]; }
-    for(i=0;i<32;i++) { sm[i] = rx.v[i]; }
+    fe25519_pack(sm,&rx);
     hash(sm, sm, mlen+64);
     group_scalar_get64(&h, sm);
     group_scalar_get32(&s, sk+32);
@@ -106,7 +122,7 @@ int verify(
      *      pk (32 bytes): Public key, x-coordinate (no sign bit)
      *
      * Output: 
-     *      0 if correct, 1 if incorrect
+     *      1 if correct, 0 if incorrect
      *      m: Message
      *      mlen: Message length (bytes)
      */

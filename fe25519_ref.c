@@ -1,4 +1,28 @@
-#include "fe25519.h"
+/*
+ * Author: Joost Renes
+ * Version: 2017-05-24
+ * Public Domain
+ */
+
+#include "fe25519_ref.h"
+
+typedef uint32_t crypto_uint32;
+typedef uint64_t crypto_uint64;
+
+void fe25519_cswap(argfe25519 x, argfe25519 y, int b)
+{
+	int i;
+	crypto_uint32 db = -b;
+	crypto_uint32 t;
+
+	for(i=0;i<=31;i++)
+	{
+		t = x->v[i] ^ y->v[i];
+		t &= db;
+		x->v[i] ^= t;
+		y->v[i] ^= t;
+	}
+}
 
 static crypto_uint32 equal(crypto_uint32 a,crypto_uint32 b) /* 16-bit inputs */
 {
@@ -27,7 +51,7 @@ static crypto_uint32 times38(crypto_uint32 a)
   return (a << 5) + (a << 2) + (a << 1);
 }
 
-static void reduce_add_sub(fe25519 *r)
+static void reduce_add_sub(argfe25519 r)
 {
   crypto_uint32 t;
   int i,rep;
@@ -47,7 +71,7 @@ static void reduce_add_sub(fe25519 *r)
   }
 }
 
-static void reduce_mul(fe25519 *r)
+static void reduce_mul(argfe25519 r)
 {
   crypto_uint32 t;
   int i,rep;
@@ -68,7 +92,7 @@ static void reduce_mul(fe25519 *r)
 }
 
 /* reduction modulo 2^255-19 */
-void fe25519_freeze(fe25519 *r) 
+void fe25519_freeze(argfe25519 r)
 {
   int i;
     reduce_mul(r); // ADDED -- otherwise got exception
@@ -85,7 +109,7 @@ void fe25519_freeze(fe25519 *r)
   r->v[0] -= m&237;
 }
 
-void fe25519_unpack(fe25519 *r, const unsigned char x[32])
+void fe25519_unpack(argfe25519 r, const unsigned char x[32])
 {
   int i;
   for(i=0;i<32;i++) r->v[i] = x[i];
@@ -93,7 +117,7 @@ void fe25519_unpack(fe25519 *r, const unsigned char x[32])
 }
 
 /* Assumes input x being reduced below 2^255 */
-void fe25519_pack(unsigned char r[32], const fe25519 *x)
+void fe25519_pack(unsigned char r[32], const argfe25519 x)
 {
   int i;
   fe25519 y = *x;
@@ -102,13 +126,13 @@ void fe25519_pack(unsigned char r[32], const fe25519 *x)
     r[i] = y.v[i];
 }
 
-void fe25519_copy(fe25519 *r, const fe25519 *x)
+void fe25519_copy(argfe25519 r, const argfe25519 x)
 {
   int i;
     for(i=0;i<32;i++) { r->v[i] = x->v[i]; }
 }
 
-int fe25519_iszero(const fe25519 *x)
+int fe25519_iszero(const argfe25519 x)
 {
   int i;
   fe25519 t = *x;
@@ -119,27 +143,34 @@ int fe25519_iszero(const fe25519 *x)
   return r;
 }
 
-void fe25519_setone(fe25519 *r)
+void fe25519_setone(argfe25519 r)
 {
   int i;
   r->v[0] = 1;
   for(i=1;i<32;i++) r->v[i]=0;
 }
 
-void fe25519_setzero(fe25519 *r)
+void fe25519_setzero(argfe25519 r)
 {
   int i;
   for(i=0;i<32;i++) r->v[i]=0;
 }
 
-void fe25519_add(fe25519 *r, const fe25519 *x, const fe25519 *y)
+void fe25519_setbyte(argfe25519 r, unsigned char n)
+{
+  int i;
+  r->v[0] = n;
+  for(i=1;i<32;i++) r->v[i]=0;
+}
+
+void fe25519_add(argfe25519 r, const argfe25519 x, const argfe25519 y)
 {
   int i;
   for(i=0;i<32;i++) r->v[i] = x->v[i] + y->v[i];
   reduce_add_sub(r);
 }
 
-void fe25519_sub(fe25519 *r, const fe25519 *x, const fe25519 *y)
+void fe25519_sub(argfe25519 r, const argfe25519 x, const argfe25519 y)
 {
   int i;
   crypto_uint32 t[32];
@@ -150,7 +181,7 @@ void fe25519_sub(fe25519 *r, const fe25519 *x, const fe25519 *y)
   reduce_add_sub(r);
 }
 
-void fe25519_mul121666(fe25519 *r, const fe25519 *x)
+void fe25519_mul121666(argfe25519 r, const argfe25519 x)
 {
     const fe25519 c = { .v = {0x42,0xDB,0x01,0,0,0,0,0,
                                             0,0,0,0,0,0,0,0,
@@ -159,7 +190,7 @@ void fe25519_mul121666(fe25519 *r, const fe25519 *x)
     fe25519_mul(r, x, &c);
 }
 
-void fe25519_mul(fe25519 *r, const fe25519 *x, const fe25519 *y)
+void fe25519_mul(argfe25519 r, const argfe25519 x, const argfe25519 y)
 {
   int i,j;
   crypto_uint32 t[63];
@@ -176,12 +207,12 @@ void fe25519_mul(fe25519 *r, const fe25519 *x, const fe25519 *y)
   reduce_mul(r);
 }
 
-void fe25519_square(fe25519 *r, const fe25519 *x)
+void fe25519_square(argfe25519 r, const argfe25519 x)
 {
   fe25519_mul(r, x, x);
 }
 
-void fe25519_invert(fe25519 *r, const fe25519 *x)
+void fe25519_invert(argfe25519 r, const argfe25519 x)
 {
     fe25519 z2;
     fe25519 t1;
@@ -241,4 +272,32 @@ void fe25519_invert(fe25519 *r, const fe25519 *x)
     /* 2^254 - 2^4 */ fe25519_square(&t0,&t1);
     /* 2^255 - 2^5 */ fe25519_square(&t1,&t0);
     /* 2^255 - 21 */ fe25519_mul(r,&t1,&z11);
+}
+
+void fe25519_sqrt(argfe25519 r,const argfe25519 a)
+{
+	fe25519 i, v, x, y, t;
+	int j;
+
+	fe25519_add(&x,a,a);
+	fe25519_square(&v, &x);
+	fe25519_mul(&t, &v, &x);
+
+	for (j = 0; j < 248; j++)
+	{
+		fe25519_square(&v, &t);
+		fe25519_mul(&t, &v, &x);
+	}
+
+	fe25519_square(&v, &t);
+	fe25519_square(&t, &v);
+	fe25519_mul(&v, &t, &x);
+
+	fe25519_square(&y, &v);
+	fe25519_mul(&i, &x, &y);
+	fe25519_setone(&y);
+	fe25519_sub(&i,&i,&y);
+	fe25519_mul(&x,&v,a);
+	fe25519_mul(r,&x,&i);
+	fe25519_freeze(r);
 }

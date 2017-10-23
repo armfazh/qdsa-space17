@@ -1,3 +1,8 @@
+/*
+ * Author: Joost Renes
+ * Version: 2017-05-24
+ * Public Domain
+ */
 #ifndef GROUP_SCALAR_H
 #define GROUP_SCALAR_H
 
@@ -10,12 +15,15 @@ typedef struct
 }
 group_scalar;
 
+void reduce_add_sub(group_scalar *r);
 int group_scalar_get32(group_scalar *r, const unsigned char x[32]);
 int group_scalar_get64(group_scalar *r, const unsigned char x[64]);
 void group_scalar_pack(unsigned char s[GROUP_SCALAR_PACKEDBYTES], const group_scalar *r);
 
+void group_scalar_add(group_scalar *r, const group_scalar *x, const group_scalar *y);
 void group_scalar_sub(group_scalar *r, const group_scalar *x, const group_scalar *y);
 void group_scalar_mul(group_scalar *r, const group_scalar *x, const group_scalar *y);
+void group_scalar_negate(group_scalar *r, const group_scalar *x);
 void group_scalar_set_pos(group_scalar *r);
 
 #endif

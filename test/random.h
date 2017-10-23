@@ -15,20 +15,12 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
-#ifndef CREF_FE25519_H
-#define CREF_FE25519_H
+#ifndef RANDOM_H
+#define RANDOM_H
 
-#include <inttypes.h>
+#include <stdint.h>
+void random_bytes(uint8_t *A, int length);
+void fe25519_random(argfe25519 A);
+void random_key(unsigned char *pk);
 
-typedef uint32_t crypto_uint32;
-typedef uint64_t crypto_uint64;
-
-#if defined(__FP_REF__)
-#include "fe25519_ref.h"
-#elif defined(__FP_X64__)
-#include "fe25519_x64.h"
-#else
-#error "Define __FP_X64__ or  __FP_REF__ variable."
-#endif
-
-#endif /* CREF_FE25519_H */
+#endif /* RANDOM_H */

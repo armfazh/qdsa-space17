@@ -1,3 +1,8 @@
+/*
+ * Author: Joost Renes
+ * Version: 2017-05-24
+ * Public Domain
+ */
 #include "dh.h"
 
 int dh_keygen(

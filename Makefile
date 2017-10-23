@@ -1,33 +1,24 @@
-CC=gcc
-CFLAGS  = -g -Wall -Wextra -Werror
+CFLAGS+= -O3 -Wall -Wextra -march=native
 
-all: test/test
+all: qdsa_ref qdsa_r2l_ref qdsa_x64 qdsa_r2l_x64
 
-c25519 = obj/fe25519.o \
-				 obj/scalar.o \
-				 obj/ladder.o \
-				 obj/dh.o \
-				 obj/sign.o \
-				 obj/hash.o
+SRC = scalar.c ladder.c dh.c sign.c hash.c
+AUX = test/test.c test/print.c test/clocks.c test/random.c
 
-test/test: test/test.c test/print.c obj/c25519.a
-	$(CC) $(CFLAGS) $^ -o $@
+qdsa_ref: fe25519_ref.c  $(SRC) $(AUX)
+	$(CC) $(CFLAGS) $^ -o $@ -D__NO_R2L__ -D__FP_REF__
 
-test/print: test/print.c obj/c25519.a
-	$(CC) $(CFLAGS) $^ -o $@
+qdsa_r2l_ref: fe25519_ref.c  $(SRC) $(AUX)
+	$(CC) $(CFLAGS) $^ -o $@ -D__R2L__ -D__FP_REF__
 
-obj/c25519.a: $(c25519)
-	$(AR) -ar cr $@ $^
+qdsa_x64: fe25519_x64.c  $(SRC) $(AUX)
+	$(CC) $(CFLAGS) $^ -o $@ -D__NO_R2L__ -D__FP_X64__
 
-obj/%.o: %.[cS]
-	mkdir -p obj/
-	$(CC) $(CFLAGS) -c $^ -o $@
+qdsa_r2l_x64: fe25519_x64.c  $(SRC) $(AUX)
+	$(CC) $(CFLAGS) $^ -o $@ -D__R2L__ -D__FP_X64__
 
 .PHONY: clean
 
 clean:
-	-rm -r obj/*
-	-rm -r test/test
+	-rm -f qdsa_ref qdsa_r2l_ref qdsa_x64 qdsa_r2l_x64 
 
-run:
-	test/test

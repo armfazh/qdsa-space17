@@ -1,3 +1,8 @@
+/*
+ * Author: Joost Renes
+ * Version: 2017-05-24
+ * Public Domain
+ */
 #include "scalar.h"
 
 static const crypto_uint32 m[32] = {0xED, 0xD3, 0xF5, 0x5C, 0x1A, 0x63, 0x12, 0x58, 0xD6, 0x9C, 0xF7, 0xA2, 0xDE, 0xF9, 0xDE, 0x14, 
@@ -15,7 +20,7 @@ static crypto_uint32 lt(crypto_uint32 a,crypto_uint32 b) /* 16-bit inputs */
 }
 
 /* Reduce coefficients of r before calling reduce_add_sub */
-static void reduce_add_sub(group_scalar *r)
+void reduce_add_sub(group_scalar *r)
 {
   crypto_uint32 pb = 0;
   crypto_uint32 b;
@@ -111,7 +116,7 @@ void group_scalar_pack(unsigned char r[GROUP_SCALAR_PACKEDBYTES], const group_sc
     r[i] = x->v[i];
 }
 
-static void group_scalar_add(group_scalar *r, const group_scalar *x, const group_scalar *y)
+void group_scalar_add(group_scalar *r, const group_scalar *x, const group_scalar *y)
 {
   int i, carry;
   for(i=0;i<32;i++) r->v[i] = x->v[i] + y->v[i];
@@ -168,7 +173,7 @@ static void group_scalar_setzero(group_scalar *r)
     r->v[i] = 0;
 }
 
-static void group_scalar_negate(group_scalar *r, const group_scalar *x)
+void group_scalar_negate(group_scalar *r, const group_scalar *x)
 {
   group_scalar t;
   group_scalar_setzero(&t);

@@ -1,3 +1,8 @@
+/*
+ * Author: Joost Renes
+ * Version: 2017-05-24
+ * Public Domain
+ */
 #ifndef HASH_H
 #define HASH_H
 
