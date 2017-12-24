@@ -1,6 +1,6 @@
 # qdsa-space2017
 ---
-This is an optimized software library of the Quotient Digital Signature Algorithm (qDSA). This library is an extension of the original code written by [Joost Renes](https://www.cs.ru.nl/~jrenes/) (v. 2017-05-24). However, our code is optimized for 64-bit Intel architectures.
+This is an optimized software library of the Quotient Digital Signature Algorithm (qDSA). This library is an extension of the original code written by [Joost Renes](https://www.cs.ru.nl/~jrenes/) (v. 2017-05-24). However, our code is enhanced with the following new features:
 
 **New Features**:
 
