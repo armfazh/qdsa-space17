@@ -1,33 +1,45 @@
-
 # qdsa-space2017
-This is an optimized library of the qDSA digital signature scheme for x64 architectures, it is an extension of the original library written by  [Joost Renes](https://www.cs.ru.nl/~jrenes/) (v. 2017-05-24).
+---
+This is an optimized software library of the Quotient Digital Signature Algorithm (qDSA). This library is an extension of the original code written by [Joost Renes](https://www.cs.ru.nl/~jrenes/) (v. 2017-05-24). However, our code is optimized for 64-bit Intel architectures.
 
 **New Features**:
 
- - New right-to-left algorithm for fixed-point multiplication on Montgomery curves.
- - Optimized prime field arithmetic for x64 architectures using MULX and ADCX/ADOX instructions.
+ - New right-to-left algorithm to calculate fixed-point multiplications on Montgomery curves.
+ - Optimized prime field arithmetic for 64-bit Intel architectures using MULX and ADCX/ADOX instructions.
  - A short-size look-up table of 8 KB.
- - Around 25,000 signatures per second on Haswell at 3.4 GHz ([more details](#benchmark)).
- - Secure software protected with countermeasures against some side-channel attacks.
+ - Around 25,000 signatures-per-second on an Intel Haswell processor running at 3.4 GHz ([see more details](#benchmark)).
+ - Secure software protected with countermeasures against some side-channel attacks, e.g. constant-time execution, memory accessing and branching using non-secret data.  
 
 ----
 
 ## Research Resources
 
-This library is part of an academic research paper titled _"A Secure and Efficient Implementation of the Quotient Digital Signature Algorithm (qDSA)"_ by [Armando Faz-Hernández](http://www.ic.unicamp.br/~armfazh), [Hayato Fujii](http://lasca.ic.unicamp.br/~hayato/), [Diego Aranha](https://sites.google.com/site/dfaranha/), and [Julio López](http://www.ic.unicamp.br/pessoas/docentes/jlopez) from the Institute of Computing of the [University of Campinas](http://ic.unicamp.br), Brazil.
+This software library is part of a peer-reviewed paper titled _"A Secure and Efficient Implementation of the Quotient Digital Signature Algorithm (qDSA)"_ authored by:
+ * [Armando Faz-Hernández](http://www.ic.unicamp.br/~armfazh)
+ * [Hayato Fujii](http://lasca.ic.unicamp.br/~hayato/)
+ * [Diego Aranha](https://sites.google.com/site/dfaranha/)
+ * [Julio López](http://www.ic.unicamp.br/pessoas/docentes/jlopez)
 
-A peer-reviewed paper was presented at the Seventh International Conference on Security, Privacy, and Applied Cryptography Engineering ([SPACE 2017](http://www.space.dbcegoa.ac.in/)) conference.
+all of them are with the [Institute of Computing](http://ic.unicamp.br) of the University of Campinas, Brazil.
+This paper was presented at the Seventh International Conference on Security, Privacy, and Applied Cryptography Engineering ([SPACE 2017](http://www.space.dbcegoa.ac.in/)) conference.
 
 To cite this work use:
 
 ```tex
-@inproceedings{qdsa_space2017,
+@inproceedings{faz_qdsa_space2017,
     author = {Armando Faz-Hern\'{a}ndez and Hayato Fujii and Diego F. Aranha and Julio L\'{o}pez},
-    title = {A Secure and Efficient Implementation of the Quotient Digital Signature Algorithm (qDSA)},
-    booktitle = {Security, Privacy, and Applied Cryptography Engineering: 7th International Conference, SPACE 2017, Goa, India, December 13-17, 2017, Proceedings},
-    year = {2017},
-    publisher = {Springer International Publishing},
+    address = "Cham",
+	booktitle = "Security, Privacy, and Applied Cryptography Engineering: 7th International Conference, SPACE 2017, Goa, India, December 13-17, 2017, Proceedings",
+	doi = "10.1007/978-3-319-71501-8_10",
+	editor = "Ali, Sk Subidh and Danger, Jean-Luc and Eisenbarth, Thomas",
+	isbn = "978-3-319-71501-8",
+	pages = "170–189",
+	publisher = "Springer International Publishing",
+	title = "A Secure and Efficient Implementation of the Quotient Digital Signature Algorithm (qDSA)",
+	url = "https://doi.org/10.1007/978-3-319-71501-8_10",
+	year = "2017"
 }
+
 ```
 
 ----
