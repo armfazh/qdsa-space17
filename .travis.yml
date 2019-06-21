@@ -1,4 +1,7 @@
 language: c
+branches:
+  only:
+  - master
 addons:
   apt:
     sources:
@@ -6,3 +9,10 @@ addons:
     packages:
       - cmake-data
       - cmake
+git:
+  depth: 1
+matrix:
+  include :
+    - os: linux
+      compiler: gcc
+      env: AUTOTOOLS=no
